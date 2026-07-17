@@ -9,6 +9,7 @@ function RegisterForm() {
     const [user, setUser] = useState({
         name: "",
         email: "",
+        mobile: "",
         password: ""
     });
 
@@ -65,6 +66,14 @@ function RegisterForm() {
                 name="email"
                 type="email"
                 placeholder="Email"
+                className="w-full border p-3 rounded-lg"
+                onChange={handleChange}
+            />
+
+            <input
+                name="mobile"
+                type="tel"
+                placeholder="Mobile Number"
                 className="w-full border p-3 rounded-lg"
                 onChange={handleChange}
             />
