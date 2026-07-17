@@ -18,22 +18,20 @@ function ProductCard({ product }) {
             toast.error("Failed to add item");
         }
     });
+    
+     return (
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl duration-300">
 
-    return (
-        <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
-
-            <Link to={`/product/${product.id}`}>
-                <img
-                    src={product.imgUrl}
-                    alt={product.name}
-                    className="h-60 w-full object-cover"
-                />
-            </Link>
+            <img
+                src={product.imgUrl}
+                alt={product.name}
+                className="h-60 w-full object-cover"
+            />
 
             <div className="p-5">
 
-                <p className="text-sm text-gray-500">
-                    {product.category?.name || "Uncategorized"}
+                <p className="text-gray-500">
+                    {product.category?.name}
                 </p>
 
                 <h2 className="text-xl font-bold mt-2">
@@ -44,57 +42,24 @@ function ProductCard({ product }) {
                     {product.description}
                 </p>
 
-                <div className="mt-3">
-                    <span className="text-2xl font-bold text-blue-600">
+                <div className="flex justify-between mt-4">
+                    <span className="text-blue-600 font-bold text-xl">
                         ₹{product.price}
+                    </span>
+
+                    <span className="text-sm text-gray-500">
+                        Stock: {product.stock}
                     </span>
                 </div>
 
-                <p className="mt-2">
-                    {product.stock > 0 ? (
-                        <span className="text-green-600 font-semibold">
-                            In Stock ({product.stock})
-                        </span>
-                    ) : (
-                        <span className="text-red-600 font-semibold">
-                            Out of Stock
-                        </span>
-                    )}
-                </p>
-
-                <div className="flex gap-3 mt-6">
-
-                    {/* Replace your old button with this */}
-                    <button
-                        onClick={() =>
-                            mutation.mutate({
-                                user: {
-                                    id: 1
-                                },
-                                product: {
-                                    id: product.id
-                                },
-                                quantity: 1
-                            })
-                        }
-                        disabled={mutation.isPending}
-                        className="flex-1 bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 disabled:bg-gray-400"
-                    >
-                        <FaShoppingCart className="inline mr-2" />
-
-                        {mutation.isPending ? "Adding..." : "Add to Cart"}
-                    </button>
-
-                    <button className="bg-red-500 text-white px-4 rounded-xl hover:bg-red-600">
-                        <FaHeart />
-                    </button>
-
-                </div>
+                <button className="mt-5 w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700">
+                    Add To Cart
+                </button>
 
             </div>
-
         </div>
     );
+    
 }
 
 export default ProductCard;
