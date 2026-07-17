@@ -1,7 +1,17 @@
+import LoginForm from "../../components/auth/LoginForm";
+
 function Login() {
+
     return (
-        <h1>Login Page</h1>
+
+        <div className="flex justify-center py-20">
+
+            <LoginForm/>
+
+        </div>
+
     );
+
 }
 
 export default Login;

@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
+import ProtectedRoute from "./ProtectedRoute";
 import Home from "../pages/Home/Home";
 import Products from "../pages/Products/Products";
 import ProductDetails from "../pages/ProductDetails/ProductDetails";
@@ -16,30 +17,68 @@ function AppRoutes() {
     return (
         <Routes>
 
-            <Route path="/" element={<Home />} />
+    {/* Public Routes */}
 
-            <Route path="/products" element={<Products />} />
+    <Route path="/" element={<Home />} />
 
-            <Route path="/product/:id" element={<ProductDetails />} />
+    <Route path="/products" element={<Products />} />
 
-            <Route path="/cart" element={<Cart />} />
+    <Route path="/product/:id" element={<ProductDetails />} />
 
-            <Route path="/wishlist" element={<Wishlist />} />
+    <Route path="/login" element={<Login />} />
 
-            <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
 
-            <Route path="/register" element={<Register />} />
+    {/* Protected Routes */}
 
-            <Route path="/profile" element={<Profile />} />
+    <Route
+        path="/cart"
+        element={
+            <ProtectedRoute>
+                <Cart />
+            </ProtectedRoute>
+        }
+    />
 
-            <Route path="/orders" element={<Orders />} />
+    <Route
+        path="/profile"
+        element={
+            <ProtectedRoute>
+                <Profile />
+            </ProtectedRoute>
+        }
+    />
 
-            <Route path="/checkout" element={<Checkout />} />
+    <Route
+        path="/orders"
+        element={
+            <ProtectedRoute>
+                <Orders />
+            </ProtectedRoute>
+        }
+    />
 
-            {/* If no route matches */}
-            <Route path="*" element={<NotFound />} />
+    <Route
+        path="/checkout"
+        element={
+            <ProtectedRoute>
+                <Checkout />
+            </ProtectedRoute>
+        }
+    />
 
-        </Routes>
+    <Route
+        path="/wishlist"
+        element={
+            <ProtectedRoute>
+                <Wishlist />
+            </ProtectedRoute>
+        }
+    />
+
+    <Route path="*" element={<NotFound />} />
+
+</Routes>
     );
 }
 

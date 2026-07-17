@@ -5,8 +5,11 @@ import {
   FaUser,
   FaSearch,
 } from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
 
 function Navbar() {
+  const { user, logout } = useAuth();
+
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -61,9 +64,27 @@ function Navbar() {
         </span>
         </div>
 
-            <Link to="/profile">
-              <FaUser size={20} />
-            </Link>
+            {user ? (
+  <>
+    <Link to="/profile">
+      <FaUser size={20} />
+    </Link>
+
+    <button
+      onClick={logout}
+      className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600"
+    >
+      Logout
+    </button>
+  </>
+) : (
+  <Link
+    to="/login"
+    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+  >
+    Login
+  </Link>
+)}
 
           </div>
 
