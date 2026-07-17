@@ -1,58 +1,67 @@
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
+  return (
+    <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
 
-    return (
+      <Link to={`/product/${product.id}`}>
+        <img
+          src={product.imgUrl}
+          alt={product.name}
+          className="h-60 w-full object-cover"
+        />
+      </Link>
 
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl duration-300">
+      <div className="p-5">
 
-            <img
-             src={product.imageUrl}
-             alt={product.name}
-            />
+        <p className="text-sm text-gray-500">
+          {product.category?.name || "Uncategorized"}
+        </p>
 
-            <div className="p-5">
+        <h2 className="text-xl font-bold mt-2">
+          {product.name}
+        </h2>
 
-                <p>{product.category?.name}</p>
+        <p className="text-gray-600 mt-2 line-clamp-2">
+          {product.description}
+        </p>
 
-                <h2>{product.name}</h2>
+        <div className="mt-3">
+          <span className="text-2xl font-bold text-blue-600">
+            ₹{product.price}
+          </span>
+        </div>
 
-                <div className="flex justify-between mt-4">
+       <p className="mt-2">
+        {product.stock > 0 ? (
+            <span className="text-green-600 font-semibold">
+                In Stock ({product.stock})
+            </span>
+        ) : (
+            <span className="text-red-600 font-semibold">
+                Out of Stock
+            </span>
+        )}
+    </p>
 
-                    <span>₹{product.price}</span>
+        <div className="flex gap-3 mt-6">
 
-                    <span className="line-through text-gray-400">
+          <button className="flex-1 bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700">
+            <FaShoppingCart className="inline mr-2" />
+            Add to Cart
+          </button>
 
-                        ₹{product.oldPrice}
-
-                    </span>
-
-                </div>
-
-                <div className="flex gap-3 mt-6">
-
-                    <button
-                        className="flex-1 bg-blue-600 text-white py-3 rounded-xl"
-                    >
-                        <FaShoppingCart className="inline mr-2" />
-
-                        Add
-                    </button>
-
-                    <button
-                        className="bg-red-500 text-white p-3 rounded-xl"
-                    >
-                        <FaHeart />
-                    </button>
-
-                </div>
-
-            </div>
+          <button className="bg-red-500 text-white px-4 rounded-xl hover:bg-red-600">
+            <FaHeart />
+          </button>
 
         </div>
 
-    );
+      </div>
 
+    </div>
+  );
 }
 
 export default ProductCard;
