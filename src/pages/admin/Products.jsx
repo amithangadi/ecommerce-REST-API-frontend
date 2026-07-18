@@ -1,8 +1,41 @@
+import { useState } from "react";
+import {
+    useQuery,
+    useMutation,
+    useQueryClient
+} from "@tanstack/react-query";
+
 import AdminLayout from "../../components/admin/AdminLayout";
-import { useQuery } from "@tanstack/react-query";
-import { getAllProducts } from "../../services/adminProductService";
+import AddProductModal from "../../components/admin/AddProductModal";
+
+import {
+    getAllProducts,
+    addProduct
+} from "../../services/adminProductService";
 
 function Products() {
+
+    const [open, setOpen] = useState(false);
+
+const queryClient = useQueryClient();
+
+const addMutation = useMutation({
+
+    mutationFn: addProduct,
+
+    onSuccess: () => {
+
+        queryClient.invalidateQueries({
+            queryKey: ["admin-products"]
+        });
+
+        setOpen(false);
+
+        alert("Product Added Successfully");
+
+    }
+
+});
 
     const {
         data: products = [],
@@ -34,11 +67,14 @@ function Products() {
 
             <div className="flex justify-between items-center mb-6">
 
-                <h1 className="text-3xl font-bold">
-                    Products
+                <h1 className="text-3xl font-bold text-red-600">
+                PRODUCTS PAGE UPDATED
                 </h1>
 
-                <button className="bg-blue-600 text-white px-5 py-2 rounded-lg">
+                <button
+                    onClick={() => setOpen(true)}
+                    className="bg-blue-600 text-white px-5 py-2 rounded-lg"
+                >
                     + Add Product
                 </button>
 
@@ -102,6 +138,14 @@ function Products() {
                 </tbody>
 
             </table>
+
+            {
+            open && (
+            <AddProductModal
+                onClose={() => setOpen(false)}
+                onSave={(product) => addMutation.mutate(product)}
+                />
+            )}
 
         </AdminLayout>
     );

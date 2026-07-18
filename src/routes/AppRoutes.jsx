@@ -37,7 +37,7 @@ function AppRoutes() {
     <Route path="/register" element={<Register />} />
 
     <Route path="/admin" element={<Dashboard />} />
-<Route path="/admin/products" element={<Products />} />
+<Route path="/admin/products" element={<AdminProducts />} />
 <Route path="/admin/categories" element={<Categories />} />
 <Route path="/admin/orders" element={<Orders />} />
 <Route path="/admin/users" element={<Users />} />
