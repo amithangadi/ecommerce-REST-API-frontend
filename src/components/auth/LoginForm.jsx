@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { login } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function LoginForm() {
 
     const navigate = useNavigate();
+
+    const { login: loginUser } = useAuth();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,24 +18,27 @@ function LoginForm() {
 
         try {
 
-            const response = await login({
-                email,
-                password
-            });
+        const response = await login({
+            email,
+            password
+        });
 
-            console.log(response);
+        alert(response);
 
-            alert(response);
+        if (response === "user login successfull") {
+
+            loginUser(email);
 
             navigate("/");
-
-        } catch (error) {
-
-            console.error(error);
-            alert("Invalid Credentials");
-
         }
 
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Invalid Credentials");
+
+    }
     }
 
     return (
