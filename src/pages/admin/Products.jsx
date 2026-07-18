@@ -8,16 +8,23 @@ import {
 import AdminLayout from "../../components/admin/AdminLayout";
 import AddProductModal from "../../components/admin/AddProductModal";
 
+import { deleteProduct } from "../../services/adminProductService";
+
 import {
     getAllProducts,
-    addProduct
+    addProduct,
+    updateProduct
 } from "../../services/adminProductService";
 
 function Products() {
 
+    //STATE
     const [open, setOpen] = useState(false);
 
-const queryClient = useQueryClient();
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
+    //QUERY CLIENT
+    const queryClient = useQueryClient();
 
 const addMutation = useMutation({
 
@@ -36,6 +43,37 @@ const addMutation = useMutation({
     }
 
 });
+
+    const updateMutation = useMutation({
+
+    mutationFn: ({ id, product }) =>
+        updateProduct(id, product),
+
+    onSuccess: () => {
+
+        queryClient.invalidateQueries({
+            queryKey:["admin-products"]
+        });
+
+        setOpen(false);
+
+        setSelectedProduct(null);
+
+        alert("Product Updated");
+
+    }
+
+});
+
+        const deleteMutation = useMutation({
+            mutationFn: deleteProduct,
+            onSuccess: () => {
+                queryClient.invalidateQueries({
+                    queryKey:["admin-products"]
+                });
+                alert("Product Deleted");
+            }
+        });
 
     const {
         data: products = [],
@@ -121,11 +159,24 @@ const addMutation = useMutation({
 
                             <td className="space-x-2">
 
-                                <button className="bg-yellow-500 text-white px-3 py-1 rounded">
+                                <button
+                                onClick={() => {
+                                    setSelectedProduct(product);
+                                    setOpen(true);
+                                }}
+                                className="bg-yellow-500 text-white px-3 py-1 rounded"
+                                >
                                     Edit
                                 </button>
 
-                                <button className="bg-red-600 text-white px-3 py-1 rounded">
+                                <button
+                                className="bg-red-600 text-white px-3 py-1 rounded"
+                                onClick={() => {
+                                    if(window.confirm("Delete this product?")){
+                                        deleteMutation.mutate(product.id);
+                                    }
+                                }}
+                                >
                                     Delete
                                 </button>
 
@@ -142,9 +193,25 @@ const addMutation = useMutation({
             {
             open && (
             <AddProductModal
-                onClose={() => setOpen(false)}
-                onSave={(product) => addMutation.mutate(product)}
-                />
+                product={selectedProduct}
+                onClose={() => {
+                    setOpen(false);
+                    setSelectedProduct(null);
+                }}
+
+                onSave={(data) => {
+                    if (selectedProduct) {
+                        updateMutation.mutate({
+                            id:selectedProduct.id,
+                            product:data
+                        });
+                } else {
+
+            addMutation.mutate(data);
+
+                }
+            }}
+        />
             )}
 
         </AdminLayout>

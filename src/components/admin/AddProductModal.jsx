@@ -1,8 +1,9 @@
 import { useState } from "react";
 
-function AddProductModal({ onClose, onSave }) {
+function AddProductModal({ onClose, onSave, product }) {
 
-    const [product, setProduct] = useState({
+    const [formData, setFormData] = useState(
+    product || {
         name: "",
         description: "",
         price: "",
@@ -11,39 +12,39 @@ function AddProductModal({ onClose, onSave }) {
         category: {
             id: ""
         }
-    });
+     }
+  );
 
     const handleChange = (e) => {
 
-        const { name, value } = e.target;
+    const { name, value } = e.target;
 
-        if (name === "categoryId") {
+    if (name === "categoryId") {
 
-            setProduct({
-                ...product,
-                category: {
-                    id: Number(value)
-                }
-            });
+        setFormData({
+            ...formData,
+            category: {
+                id: Number(value)
+            }
+        });
 
-        } else {
+    } else {
 
-            setProduct({
-                ...product,
-                [name]: value
-            });
+        setFormData({
+            ...formData,
+            [name]: value
+        });
 
-        }
+    }
+};
 
-    };
+   const handleSubmit = (e) => {
 
-    const handleSubmit = (e) => {
+    e.preventDefault();
 
-        e.preventDefault();
+    onSave(formData);
 
-        onSave(product);
-
-    };
+};
 
     return (
 
@@ -65,6 +66,7 @@ function AddProductModal({ onClose, onSave }) {
                     <input
                         name="name"
                         placeholder="Product Name"
+                        value={formData.name}
                         className="w-full border p-3 rounded"
                         onChange={handleChange}
                     />
@@ -72,6 +74,7 @@ function AddProductModal({ onClose, onSave }) {
                     <textarea
                         name="description"
                         placeholder="Description"
+                        value={formData.description}
                         className="w-full border p-3 rounded"
                         onChange={handleChange}
                     />
@@ -80,6 +83,7 @@ function AddProductModal({ onClose, onSave }) {
                         name="price"
                         type="number"
                         placeholder="Price"
+                        value={formData.price}
                         className="w-full border p-3 rounded"
                         onChange={handleChange}
                     />
@@ -88,6 +92,7 @@ function AddProductModal({ onClose, onSave }) {
                         name="stock"
                         type="number"
                         placeholder="Stock"
+                        value={formData.stock}
                         className="w-full border p-3 rounded"
                         onChange={handleChange}
                     />
@@ -95,6 +100,7 @@ function AddProductModal({ onClose, onSave }) {
                     <input
                         name="imgUrl"
                         placeholder="Image URL"
+                        value={formData.imgUrl}
                         className="w-full border p-3 rounded"
                         onChange={handleChange}
                     />
@@ -103,6 +109,7 @@ function AddProductModal({ onClose, onSave }) {
                         name="categoryId"
                         type="number"
                         placeholder="Category Id"
+                        value={formData.category?.id || ""}
                         className="w-full border p-3 rounded"
                         onChange={handleChange}
                     />
