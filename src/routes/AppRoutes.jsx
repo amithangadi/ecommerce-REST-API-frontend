@@ -13,6 +13,13 @@ import Orders from "../pages/Orders/Orders";
 import Checkout from "../pages/Checkout/Checkout";
 import NotFound from "../pages/NotFound/NotFound";
 
+import Dashboard from "../pages/admin/Dashboard";
+import AdminProducts from "../pages/admin/Products";
+import Categories from "../pages/admin/Categories";
+import AdminOrders from "../pages/admin/Orders";
+import Users from "../pages/admin/Users";
+import Payments from "../pages/admin/Payments";
+
 function AppRoutes() {
     return (
         <Routes>
@@ -28,6 +35,15 @@ function AppRoutes() {
     <Route path="/login" element={<Login />} />
 
     <Route path="/register" element={<Register />} />
+
+    <Route path="/admin" element={<Dashboard />} />
+<Route path="/admin/products" element={<Products />} />
+<Route path="/admin/categories" element={<Categories />} />
+<Route path="/admin/orders" element={<Orders />} />
+<Route path="/admin/users" element={<Users />} />
+<Route path="/admin/payments" element={<Payments />} />
+
+<Route path="*" element={<NotFound />} />
 
     {/* Protected Routes */}
 
