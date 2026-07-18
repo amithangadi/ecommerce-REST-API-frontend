@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "../../services/adminCategoryService";
 
 function AddProductModal({ onClose, onSave, product }) {
 
@@ -14,6 +16,11 @@ function AddProductModal({ onClose, onSave, product }) {
         }
      }
   );
+
+    const { data: categories = [] } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+    });
 
     const handleChange = (e) => {
 
@@ -105,14 +112,27 @@ function AddProductModal({ onClose, onSave, product }) {
                         onChange={handleChange}
                     />
 
-                    <input
+                    <select
                         name="categoryId"
-                        type="number"
-                        placeholder="Category Id"
-                        value={formData.category?.id || ""}
                         className="w-full border p-3 rounded"
                         onChange={handleChange}
-                    />
+                    >
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    {
+                        categories.map(category => (
+                        <option
+                        key={category.id}
+                        value={category.id}
+                        >
+                        {category.name}
+                        </option>
+                        ))
+                        }
+                        </select>
 
                     <div className="flex justify-end gap-4">
 
