@@ -17,12 +17,22 @@ function Categories() {
 
     const queryClient = useQueryClient();
 
+    const [search, setSearch] = useState("");
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const categoriesPerPage = 5;
+
     const [category, setCategory] = useState({
         name: "",
         description: ""
     });
 
-    const { data: categories = [], isLoading, error } = useQuery({
+    const {
+        data: categories = [],
+        isLoading,
+        error
+    } = useQuery({
         queryKey: ["categories"],
         queryFn: getCategories
     });
@@ -76,6 +86,26 @@ function Categories() {
         );
     }
 
+    // Search
+
+    const filteredCategories = categories.filter((cat) =>
+        cat.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    // Pagination
+
+    const lastIndex = currentPage * categoriesPerPage;
+    const firstIndex = lastIndex - categoriesPerPage;
+
+    const currentCategories = filteredCategories.slice(
+        firstIndex,
+        lastIndex
+    );
+
+    const totalPages = Math.ceil(
+        filteredCategories.length / categoriesPerPage
+    );
+
     return (
 
         <AdminLayout>
@@ -88,7 +118,7 @@ function Categories() {
 
             </div>
 
-            {/* Add Category Form */}
+            {/* Add Category */}
 
             <div className="bg-white shadow rounded-xl p-6 mb-8">
 
@@ -132,7 +162,24 @@ function Categories() {
 
             </div>
 
-            {/* Category Table */}
+            {/* Search */}
+
+            <div className="mb-6">
+
+                <input
+                    type="text"
+                    placeholder="Search Category..."
+                    value={search}
+                    onChange={(e) => {
+                        setSearch(e.target.value);
+                        setCurrentPage(1);
+                    }}
+                    className="border rounded-lg px-4 py-2 w-80"
+                />
+
+            </div>
+
+            {/* Table */}
 
             <table className="w-full bg-white shadow rounded-lg overflow-hidden">
 
@@ -154,56 +201,121 @@ function Categories() {
 
                 <tbody>
 
-                    {categories.map((category) => (
+                    {currentCategories.length === 0 ? (
 
-                        <tr
-                            key={category.id}
-                            className="border-t text-center"
-                        >
+                        <tr>
 
-                            <td className="p-3">
-                                {category.id}
-                            </td>
-
-                            <td>
-                                {category.name}
-                            </td>
-
-                            <td>
-                                {category.description}
-                            </td>
-
-                            <td>
-
-                                <button
-
-                                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
-
-                                    onClick={() => {
-
-                                        if (window.confirm("Delete this category?")) {
-
-                                            deleteMutation.mutate(category.id);
-
-                                        }
-
-                                    }}
-
-                                >
-
-                                    Delete
-
-                                </button>
-
+                            <td
+                                colSpan="4"
+                                className="text-center py-6"
+                            >
+                                No Categories Found
                             </td>
 
                         </tr>
 
-                    ))}
+                    ) : (
+
+                        currentCategories.map((cat) => (
+
+                            <tr
+                                key={cat.id}
+                                className="border-t text-center"
+                            >
+
+                                <td className="p-3">
+                                    {cat.id}
+                                </td>
+
+                                <td>
+                                    {cat.name}
+                                </td>
+
+                                <td>
+                                    {cat.description}
+                                </td>
+
+                                <td>
+
+                                    <button
+
+                                        className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+
+                                        onClick={() => {
+
+                                            if (
+                                                window.confirm(
+                                                    "Delete this category?"
+                                                )
+                                            ) {
+
+                                                deleteMutation.mutate(cat.id);
+
+                                            }
+
+                                        }}
+
+                                    >
+
+                                        Delete
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+                        ))
+
+                    )}
 
                 </tbody>
 
             </table>
+
+            {/* Pagination */}
+
+            <div className="flex justify-center items-center gap-4 mt-8">
+
+                <button
+
+                    disabled={currentPage === 1}
+
+                    onClick={() =>
+                        setCurrentPage((prev) => prev - 1)
+                    }
+
+                    className="bg-gray-300 px-4 py-2 rounded disabled:opacity-50"
+
+                >
+
+                    Previous
+
+                </button>
+
+                <span>
+
+                    Page {currentPage} of {totalPages || 1}
+
+                </span>
+
+                <button
+
+                    disabled={currentPage === totalPages || totalPages === 0}
+
+                    onClick={() =>
+                        setCurrentPage((prev) => prev + 1)
+                    }
+
+                    className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+
+                >
+
+                    Next
+
+                </button>
+
+            </div>
 
         </AdminLayout>
 
@@ -212,3 +324,4 @@ function Categories() {
 }
 
 export default Categories;
+
