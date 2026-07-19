@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+
 import {
   FaShoppingCart,
   FaHeart,
@@ -40,10 +41,17 @@ function Navbar() {
 
             <Link to="/">Home</Link>
 
-            <Link to="/products">Products</Link>
+<Link to="/products">Products</Link>
 
-            {/* Wishlist */}
-            <div className="relative">
+<Link
+  to="/admin"
+  className="hover:text-blue-600 transition"
+>
+  Admin
+</Link>
+
+{/* Wishlist */}
+<div className="relative">
               <Link to="/wishlist">
                 <FaHeart size={22} />
               </Link>
