@@ -39,6 +39,8 @@ function AppRoutes() {
 
             <Route path="/register" element={<Register />} />
 
+            
+
             {/* ---------- Admin Routes ---------- */}
 
             <Route path="/admin" element={<Dashboard />} />
