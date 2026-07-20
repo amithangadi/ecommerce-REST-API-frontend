@@ -1,7 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 function CartSummary({ items }) {
 
+    const navigate = useNavigate();
+
     const subtotal = items.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+        (sum, item) => sum + item.product.price * item.quantity,
         0
     );
 
@@ -51,6 +55,7 @@ function CartSummary({ items }) {
             </div>
 
             <button
+                onClick={() => navigate("/checkout")}
                 className="mt-6 w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700"
             >
                 Proceed to Checkout
