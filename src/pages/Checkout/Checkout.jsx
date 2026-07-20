@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCart } from "../../services/cartService";
+import { createOrder } from "../../services/paymentService";
 
 function Checkout() {
 
@@ -22,6 +23,67 @@ function Checkout() {
         state: "",
         pincode: "",
     });
+
+    //Payment
+    const handlePayment = async () => {
+
+    try {
+
+        const order = await createOrder(Math.round(grandTotal));
+
+        const options = {
+
+            key: "rzp_test_SbiNGFYKbP2SVk",
+
+            amount: order.amount,
+
+            currency: order.currency,
+
+            name: "ShopEase",
+
+            description: "Order Payment",
+
+            order_id: order.id,
+
+            handler: function (response) {
+
+                alert("Payment Successful!");
+
+                console.log(response);
+
+                // Next we'll place orders and clear the cart
+
+            },
+
+            prefill: {
+
+                name: address.fullName,
+
+                contact: address.mobile
+
+            },
+
+            theme: {
+
+                color: "#2563EB"
+
+            }
+
+        };
+
+        const razorpay = new window.Razorpay(options);
+
+        razorpay.open();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Payment Failed");
+
+    }
+
+};
 
     const handleChange = (e) => {
         setAddress({
@@ -222,7 +284,8 @@ function Checkout() {
                         </div>
 
                         <button
-                            className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition"
+                            onClick={handlePayment}
+                            className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold"
                         >
                             Proceed To Payment
                         </button>
