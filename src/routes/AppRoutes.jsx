@@ -15,6 +15,7 @@ import Orders from "../pages/Orders/Orders";
 import Checkout from "../pages/Checkout/Checkout";
 import NotFound from "../pages/NotFound/NotFound";
 
+
 // Admin Pages
 import Dashboard from "../pages/admin/Dashboard";
 import AdminProducts from "../pages/admin/Products";
@@ -69,6 +70,11 @@ function AppRoutes() {
                 path="/admin/payments"
                 element={<Payments />}
             />
+
+            <Route
+        path="/profile"
+        element={<Profile />}
+        />
 
             {/* ---------- Protected Routes ---------- */}
 
