@@ -11,3 +11,4 @@ export const searchProducts = (name) =>
 
 export const getCategoryProducts = (categoryId) =>
     api.get(`/products/category/${categoryId}`).then(res => res.data);
+

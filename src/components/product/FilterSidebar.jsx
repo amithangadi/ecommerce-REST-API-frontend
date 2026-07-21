@@ -1,63 +1,67 @@
-function FilterSidebar() {
+import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "../../services/categoryService";
+
+function FilterSidebar({ selectedCategory, onCategoryChange }) {
+
+    const { data: categories = [] } = useQuery({
+        queryKey: ["categories"],
+        queryFn: getCategories,
+    });
 
     return (
-
         <div className="bg-white rounded-2xl shadow-lg p-6">
 
             <h2 className="font-bold text-2xl">
-
                 Filters
-
             </h2>
 
-            <hr className="my-4"/>
+            <hr className="my-4" />
 
-            <h3 className="font-semibold">
-
+            <h3 className="font-semibold mb-3">
                 Category
-
             </h3>
 
-            <div className="space-y-2 mt-3">
+            <div className="space-y-3">
 
-                <label>
+                <label className="flex items-center gap-2 cursor-pointer">
 
-                    <input type="checkbox"/>
+                    <input
+                        type="radio"
+                        name="category"
+                        checked={selectedCategory === ""}
+                        onChange={() => onCategoryChange("")}
+                    />
 
-                    Electronics
-
-                </label>
-
-                <label>
-
-                    <input type="checkbox"/>
-
-                    Fashion
+                    All Categories
 
                 </label>
 
-                <label>
+                {categories.map((category) => (
 
-                    <input type="checkbox"/>
+                    <label
+                        key={category.id}
+                        className="flex items-center gap-2 cursor-pointer"
+                    >
 
-                    Books
+                        <input
+                            type="radio"
+                            name="category"
+                            checked={selectedCategory === String(category.id)}
+                            onChange={() =>
+                                onCategoryChange(String(category.id))
+                            }
+                        />
 
-                </label>
+                        {category.name}
 
-                <label>
+                    </label>
 
-                    <input type="checkbox"/>
-
-                    Shoes
-
-                </label>
+                ))}
 
             </div>
 
         </div>
-
     );
-
 }
 
 export default FilterSidebar;

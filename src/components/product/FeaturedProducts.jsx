@@ -1,23 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../../services/productService";
+import { getWishlist } from "../../services/wishlistService";
 import ProductCard from "./ProductCard";
 
 function FeaturedProducts() {
 
+    const userId = 1;
+
+    // Products
     const {
-
-        data: products,
-
+        data: products = [],
         isLoading,
-
         error,
-
     } = useQuery({
-
         queryKey: ["products"],
-
         queryFn: getProducts,
+    });
 
+    // Wishlist
+    const {
+        data: wishlist = [],
+    } = useQuery({
+        queryKey: ["wishlist", userId],
+        queryFn: () => getWishlist(userId),
     });
 
     if (isLoading)
@@ -31,18 +36,17 @@ function FeaturedProducts() {
         <section className="max-w-7xl mx-auto py-16 px-6">
 
             <h1 className="text-4xl font-bold mb-10">
-
                 Featured Products
-
             </h1>
 
             <div className="grid md:grid-cols-4 gap-8">
 
-                {products.map(product => (
+                {products.map((product) => (
 
                     <ProductCard
                         key={product.id}
                         product={product}
+                        wishlist={wishlist}
                     />
 
                 ))}

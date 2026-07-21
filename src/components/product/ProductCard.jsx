@@ -6,21 +6,22 @@ import {
 } from "../../services/wishlistService";
 import toast from "react-hot-toast";
 
-function ProductCard({ product }) {
+function ProductCard({ product, 
+    wishlist = [], }) {
 
     const queryClient = useQueryClient();
 
     const userId = 1;
 
-    // Fetch Wishlist
-    const { data: wishlist = [] } = useQuery({
-        queryKey: ["wishlist", userId],
-        queryFn: () => getWishlist(userId),
-    });
+    // // Fetch Wishlist
+    // const { data: wishlist = [] } = useQuery({
+    //     queryKey: ["wishlist", userId],
+    //     queryFn: () => getWishlist(userId),
+    // });
 
     // Check whether product already exists in wishlist
     const isWishlisted = wishlist.some(
-        (item) => item.product.id === product.id
+        (item) => item.product?.id === product.id
     );
 
     // Cart Mutation
