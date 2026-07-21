@@ -9,7 +9,7 @@ function Footer() {
         </h2>
 
         <p className="mt-3 text-gray-300">
-          Premium shopping experience built using React and Spring Boot.
+          Everything you love, just a click away.
         </p>
 
         <div className="border-t border-gray-700 mt-6 pt-6 text-center">

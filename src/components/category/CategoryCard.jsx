@@ -1,19 +1,47 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-function CategoryCard({ title, image }) {
+function CategoryCard({ id, title, image }) {
+
+    const navigate = useNavigate();
+
+
+    const handleClick = () => {
+
+        navigate(`/products?category=${id}`);
+
+    };
+
+
     return (
+
         <motion.div
+
             whileHover={{
                 y: -8,
                 scale: 1.03
             }}
+
+            onClick={handleClick}
+
             className="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer"
+
         >
-            <img
-                src={image}
-                alt={title}
-                className="h-48 w-full object-cover"
-            />
+
+            {/* Image */}
+
+            <div className="h-48 overflow-hidden">
+
+                <img
+                    src={image}
+                    alt={title}
+                    className="h-full w-full object-cover"
+                />
+
+            </div>
+
+
+            {/* Category Name */}
 
             <div className="p-5">
 
@@ -24,7 +52,9 @@ function CategoryCard({ title, image }) {
             </div>
 
         </motion.div>
+
     );
+
 }
 
 export default CategoryCard;
